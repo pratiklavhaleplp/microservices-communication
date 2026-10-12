@@ -1,0 +1,52 @@
+services:
+  order-service:
+    environment:
+      SPRING_PROFILES_ACTIVE: lab,lb
+      PAYMENT_2_URL: http://payment-2:8082
+      PAYMENT_3_URL: http://payment-3:8082
+  payment-2:
+    build:
+      context: .
+      args:
+        SERVICE: payment-service
+    environment:
+      SPRING_PROFILES_ACTIVE: lab
+      DB_URL: jdbc:postgresql://postgres:5432/payments
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      AUTH_ISSUER: http://localhost:9000
+      AUTH_JWKS: http://auth-service:9000/oauth2/jwks
+      ZIPKIN_URL: http://zipkin:9411/api/v2/spans
+      EUREKA_URL: http://discovery-server:8761/eureka/
+      INSTANCE_ID: payment-2
+    ports:
+    - 127.0.0.1:8084:8082
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+  payment-3:
+    build:
+      context: .
+      args:
+        SERVICE: payment-service
+    environment:
+      SPRING_PROFILES_ACTIVE: lab
+      DB_URL: jdbc:postgresql://postgres:5432/payments
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      AUTH_ISSUER: http://localhost:9000
+      AUTH_JWKS: http://auth-service:9000/oauth2/jwks
+      ZIPKIN_URL: http://zipkin:9411/api/v2/spans
+      EUREKA_URL: http://discovery-server:8761/eureka/
+      INSTANCE_ID: payment-3
+    ports:
+    - 127.0.0.1:8085:8082
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      auth-service:
+        condition: service_started

@@ -1,0 +1,97 @@
+### Paste a fresh token printed by: python3 scripts/get_token.py
+@token = REPLACE_WITH_TOKEN
+@orderId = REPLACE_WITH_ORDER_ID
+
+### POST: create draft; copy the returned id into orderId
+POST http://localhost:8081/api/v1/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Correlation-ID: manual-create
+
+{"sku":"BOOK-1","quantity":1,"note":"Pratik learning HTTP"}
+
+### GET: one resource
+GET http://localhost:8081/api/v1/orders/{{orderId}}
+Authorization: Bearer {{token}}
+
+### GET: filter, sort, paginate
+GET http://localhost:8081/api/v1/orders?status=DRAFT&page=0&size=10&sort=amount
+Authorization: Bearer {{token}}
+
+### PUT: replace all editable fields, before checkout
+PUT http://localhost:8081/api/v1/orders/{{orderId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"sku":"BOOK-1","quantity":2,"note":"Replaced draft"}
+
+### PATCH: change one editable field, before checkout
+PATCH http://localhost:8081/api/v1/orders/{{orderId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"note":"Updated note"}
+
+### POST action: checkout; use the SAME id when retrying
+POST http://localhost:8081/api/v1/orders/{{orderId}}/checkout
+Authorization: Bearer {{token}}
+X-Correlation-ID: manual-checkout
+
+### v2: same record, different public response shape
+GET http://localhost:8081/api/v2/orders/{{orderId}}
+Authorization: Bearer {{token}}
+
+### Payment result
+GET http://localhost:8082/api/v1/payments/by-order/{{orderId}}
+Authorization: Bearer {{token}}
+
+### Inventory event-driven sales ledger
+GET http://localhost:8083/api/v1/inventory/BOOK-1/sales
+Authorization: Bearer {{token}}
+
+### Compare clients: restclient | webclient | feign | resttemplate
+GET http://localhost:8081/api/lab/clients/feign
+Authorization: Bearer {{token}}
+X-Correlation-ID: client-comparison
+
+### Token forwarding
+GET http://localhost:8081/api/lab/forward-token
+Authorization: Bearer {{token}}
+
+### Fail the next two Payment calls; third attempt succeeds
+POST http://localhost:8082/api/lab/faults
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"mode":"503","remaining":2,"delayMs":0}
+
+### Fault status and received payment-call count
+GET http://localhost:8082/api/lab/faults
+Authorization: Bearer {{token}}
+
+### Reset faults
+POST http://localhost:8082/api/lab/faults
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"mode":"none","remaining":0,"delayMs":0}
+
+### Circuit state
+GET http://localhost:8081/api/lab/circuit
+Authorization: Bearer {{token}}
+
+### Reset circuit
+POST http://localhost:8081/api/lab/circuit/reset
+Authorization: Bearer {{token}}
+
+### Outbox rows, newest first
+GET http://localhost:8082/api/lab/outbox
+Authorization: Bearer {{token}}
+
+### Inbound request measurements
+GET http://localhost:8081/actuator/metrics/http.server.requests
+Authorization: Bearer {{token}}
+
+### DELETE: succeeds only for a DRAFT order; paid/pending yields 409
+DELETE http://localhost:8081/api/v1/orders/{{orderId}}
+Authorization: Bearer {{token}}

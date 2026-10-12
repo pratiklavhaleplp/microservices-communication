@@ -1,0 +1,18 @@
+Kafka edition; Java 17.0.20; Maven 3.9.11
+Command: mvn -o clean verify (local dependency cache)
+
+[INFO] Reactor Summary for communication-lab 1.0.0:
+[INFO] 
+[INFO] communication-lab .................................. SUCCESS [  0.097 s]
+[INFO] lab-common ......................................... SUCCESS [ 21.776 s]
+[INFO] auth-service ....................................... SUCCESS [ 15.401 s]
+[INFO] inventory-service .................................. SUCCESS [ 17.838 s]
+[INFO] payment-service .................................... SUCCESS [ 19.203 s]
+[INFO] order-service ...................................... SUCCESS [ 28.678 s]
+[INFO] discovery-server ................................... SUCCESS [  0.298 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:43 min
+[INFO] Finished at: 2026-10-12T01:02:24-05:00
+[INFO] ------------------------------------------------------------------------

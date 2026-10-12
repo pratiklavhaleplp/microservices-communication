@@ -1,0 +1,6 @@
+**/target/
+.env
+.logs/
+*.log
+.idea/
+.DS_Store

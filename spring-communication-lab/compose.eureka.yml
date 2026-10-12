@@ -1,0 +1,23 @@
+services:
+  discovery-server:
+    build:
+      context: .
+      args:
+        SERVICE: discovery-server
+    ports:
+    - 127.0.0.1:8761:8761
+  order-service:
+    environment:
+      SPRING_PROFILES_ACTIVE: lab,eureka
+  payment-service:
+    environment:
+      SPRING_PROFILES_ACTIVE: lab,eureka
+  inventory-service:
+    environment:
+      SPRING_PROFILES_ACTIVE: lab,eureka
+  payment-2:
+    environment:
+      SPRING_PROFILES_ACTIVE: lab,eureka
+  payment-3:
+    environment:
+      SPRING_PROFILES_ACTIVE: lab,eureka

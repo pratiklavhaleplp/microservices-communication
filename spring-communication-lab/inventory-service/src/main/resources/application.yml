@@ -1,0 +1,89 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: inventory-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/inventory}
+    username: ${DB_USER:inventory}
+    password: ${DB_PASSWORD:inventory-password}
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 2000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  data:
+    jpa:
+      repositories:
+        enabled: false
+  reactor:
+    context-propagation: auto
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      auto-create: true
+      fail-fast: false
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        delivery.timeout.ms: 10000
+        request.timeout.ms: 5000
+        max.block.ms: 3000
+        linger.ms: 0
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      max-poll-records: 10
+      properties:
+        allow.auto.create.topics: false
+    listener:
+      ack-mode: record
+      observation-enabled: true
+      missing-topics-fatal: false
+    template:
+      observation-enabled: true
+lab:
+  auth:
+    issuer: ${AUTH_ISSUER:http://localhost:9000}
+    jwks: ${AUTH_JWKS:http://localhost:9000/oauth2/jwks}
+eureka:
+  client:
+    enabled: false
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${INSTANCE_ID:local}:${server.port}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,circuitbreakers,circuitbreakerevents,retries,retryevents
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_URL:http://localhost:9411/api/v2/spans}
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        http.client.requests: true
+logging:
+  pattern:
+    level: '%5p [${spring.application.name:},trace=%X{traceId:-},span=%X{spanId:-},correlation=%X{correlationId:-}]'

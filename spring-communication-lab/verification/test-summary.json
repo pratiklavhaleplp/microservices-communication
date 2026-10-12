@@ -1,0 +1,161 @@
+{
+  "edition": "Kafka",
+  "date": "2026-10-12",
+  "totals": {
+    "tests": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "suite": "dev.pratik.lab.auth.AuthorizationServerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "realClientCredentialsGrantIssuesSignedJwt",
+        "wrongClientSecretIsRejected"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.inventory.ApplicationContextTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "completeServiceBeanGraphStarts"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.inventory.InventoryStoreTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "unknownSkuIs404",
+        "duplicateDeliveryCountsSaleExactlyOnce"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.common.EventContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "unsupportedSchemaGoesToDeadLetterPath"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.common.KafkaDeliveryTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "stoppedConsumerCatchesUpWhileOtherGroupContinues",
+        "unsupportedVersionGoesToBothGroupSpecificDeadLetterTopics",
+        "transientConsumerFailureSucceedsOnThirdAttempt",
+        "malformedJsonPreservesRawBytesAndDoesNotBlockLaterRecords",
+        "independentGroupsBothReceiveTheSameEvent",
+        "exhaustedTransientFailureGoesToDeadLettersAfterThreeAttempts"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.order.ApplicationContextTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "completeServiceBeanGraphStarts"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.order.OrderStoreTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "hqlInsertSelectUpdateDeleteAndPaginationWork",
+        "malformedPaginationAndSortAreRejected",
+        "frozenOrderCannotChangeAndDuplicateEventIsHarmless"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.order.PaymentClientTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "doesNotRetry400Or429",
+        "retries503ThenReturnsSuccessAndKeepsSameKey",
+        "circuitOpensAfterFourFailedCheckoutsAndShortCircuitsTheFifth",
+        "malformedSuccessBodyIsAContractFailureAndIsNotRetried",
+        "halfOpenProbeCanCloseCircuit",
+        "totalDeadlineBoundsSlowResponses"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.order.PaymentConsumerContractTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "consumerUnderstandsProviderContractAndSendsRequiredFields"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.payment.ApplicationContextTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "completeServiceBeanGraphStarts"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.payment.OutboxRelayTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "failedKafkaPublishKeepsOutboxPendingAndLaterAcknowledgementMarksItSent"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.payment.PaymentApiContractTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "missingWriteScopeIs403",
+        "invalidJsonIs400BeforeBusinessCodeRuns",
+        "providerMatchesPublishedResponseContract",
+        "missingTokenIs401"
+      ]
+    },
+    {
+      "suite": "dev.pratik.lab.payment.PaymentStoreTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "missingPaymentIs404",
+        "sameKeyWithDifferentPayloadIsConflict",
+        "sameKeyAndPayloadReturnsOriginalPaymentAndOnlyOneOutboxRow"
+      ]
+    }
+  ]
+}

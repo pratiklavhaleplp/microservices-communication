@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            payment-service:
+              - uri: ${PAYMENT_URL:http://localhost:8082}
+              - uri: ${PAYMENT_2_URL:http://localhost:8084}
+              - uri: ${PAYMENT_3_URL:http://localhost:8085}
